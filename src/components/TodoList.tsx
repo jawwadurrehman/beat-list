@@ -59,6 +59,7 @@ const TodoList = ({ item, handleTodo }: TodoListProps) => {
       ) : (
         <p
           style={{
+            marginRight:'20px',
             textDecoration: item.isCompleted ? "line-through" : "none",
           }}
         >

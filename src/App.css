@@ -8,7 +8,6 @@
 }
 
 .container {
-  max-width: 580px;
   margin: 0px auto;
   width: 100%;
   padding: 16px;
@@ -18,11 +17,18 @@
   flex-direction: row;
 }
 .title{
-  text-align: center;
-  margin: 20px 0px;
   font-weight: 800;
-  opacity: 0.8;
   letter-spacing: -0.07em;
+  color: #1e5799; 
+  color: -moz-radial-gradient(center, ellipse cover,  #1e5799 0%, #7db9e8 100%); 
+  color: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#1e5799), color-stop(100%,#7db9e8)); 
+  color: -webkit-radial-gradient(center, ellipse cover,  #1e5799 0%,#7db9e8 100%); 
+  color: -o-radial-gradient(center, ellipse cover,  #1e5799 0%,#7db9e8 100%); 
+  color: -ms-radial-gradient(center, ellipse cover,  #1e5799 0%,#7db9e8 100%);
+  color: radial-gradient(ellipse at center,  #1e5799 0%,#7db9e8 100%); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=1 );
+  -webkit-animation: filter-animation 8s infinite;
+  animation: filter-animation 8s infinite;
 }
 .todo-input-form {
   display: flex;
@@ -51,20 +57,21 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 10px 0px;
+  margin: 0px 0px 10px 0px;
 
   padding: 10px;
   align-items: center;
   border: 1px solid #00000020;
   border-radius: 4px;
+  width: 100%;
 }
 .todo-list button {
-  height: 25px;
+  height: 20px;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  margin: 0px 5px;
-  min-width: 25px;
+  margin: 0px 4px;
+  min-width: 20px;
 }
 .todo-list button:last-child {
   margin-right: 0px;
@@ -72,4 +79,32 @@
 .todo-list button svg {
   width: 100%;
   height: 100%;
+}
+
+@-webkit-keyframes filter-animation {
+  0% {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  
+  50% {
+    -webkit-filter: hue-rotate(100deg);
+  }
+  
+  100% {
+    -webkit-filter: hue-rotate(0deg);
+  }
+}
+
+@keyframes filter-animation {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  
+  50% {
+    filter: hue-rotate(100deg);
+  }
+  
+  100% {
+    filter: hue-rotate(0deg);
+  }
 }

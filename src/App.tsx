@@ -2,10 +2,12 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import TodosList from "./components/TodosList";
 import "./App.css";
 import InputField from "./components/InputField";
+import TodosBoxList from "./components/TodosBoxList";
 
 export interface Todo {
   id: number;
   title: string;
+  partOf: number;
   isCompleted: boolean;
   startDateTime: number | undefined;
   endDateTime: number | undefined;
@@ -35,15 +37,25 @@ export interface HandleTodoProps {
   };
 }
 
-const App = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+export interface TodoBoxType {
+  id: number;
+  title: string;
+}
 
-  const handleAdd = (title: string): void => {
+const App = () => {
+  const [todosBox, setTodosBox] = useState<TodoBoxType[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [options, setOptions] = useState({
+    todoListSize: "400px",
+  });
+
+  const handleAdd = (title: string, partOf: number): void => {
     setTodos((prev) => [
       ...prev,
       {
         id: Date.now(),
         title: title,
+        partOf,
         startDateTime: undefined,
         endDateTime: undefined,
         isCompleted: false,
@@ -93,13 +105,9 @@ const App = () => {
             const itemIndex = cloneTodos.findIndex((t) => t.id === payload.id);
 
             if (payload.isStartDateTime) {
-              cloneTodos[itemIndex].startDateTime = new Date(
-                `${payload.date} ${payload.time}`
-              ).valueOf();
+              cloneTodos[itemIndex].startDateTime = new Date(`${payload.date} ${payload.time}`).valueOf();
             } else {
-              cloneTodos[itemIndex].endDateTime = new Date(
-                `${payload.date} ${payload.time}`
-              ).valueOf();
+              cloneTodos[itemIndex].endDateTime = new Date(`${payload.date} ${payload.time}`).valueOf();
             }
 
             setTodos([...cloneTodos]);
@@ -112,11 +120,7 @@ const App = () => {
 
             const itemIndex = cloneTodos.findIndex((t) => t.id === payload.id);
 
-            payload.type === "start"
-              ? (cloneTodos[itemIndex].startNotified =
-                  !cloneTodos[itemIndex].startNotified)
-              : (cloneTodos[itemIndex].endNotified =
-                  !cloneTodos[itemIndex].endNotified);
+            payload.type === "start" ? (cloneTodos[itemIndex].startNotified = !cloneTodos[itemIndex].startNotified) : (cloneTodos[itemIndex].endNotified = !cloneTodos[itemIndex].endNotified);
 
             setTodos([...cloneTodos]);
           })();
@@ -130,6 +134,15 @@ const App = () => {
     [todos]
   );
 
+  const handleAddTodoBox = (title: string) => {
+    setTodosBox((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        title: title,
+      },
+    ]);
+  };
   const sortedTodos = useMemo(
     () =>
       todos.sort((a, b) => {
@@ -140,6 +153,12 @@ const App = () => {
       }),
     [todos]
   );
+  const handleInputOptions = (key: string, value: string) => {
+    setOptions((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   useEffect(() => {
     if (!("Notification" in window)) {
@@ -150,33 +169,18 @@ const App = () => {
       });
     }
 
-    const notCompletedTodos = sortedTodos.filter(
-      (todos) =>
-        !todos.isCompleted && (!todos.startNotified || !todos.endNotified)
-    );
+    const notCompletedTodos = sortedTodos.filter((todos) => !todos.isCompleted && (!todos.startNotified || !todos.endNotified));
     const notifyUserAboutTask = setInterval(() => {
       const currentTime = new Date();
 
       for (let i = 0; i < notCompletedTodos.length; i++) {
         const todo = notCompletedTodos[i];
 
-        const startDateTime = todo.startDateTime
-          ? new Date(todo.startDateTime)
-          : undefined;
-        const endDateTime = todo.endDateTime
-          ? new Date(todo.endDateTime)
-          : undefined;
+        const startDateTime = todo.startDateTime ? new Date(todo.startDateTime) : undefined;
+        const endDateTime = todo.endDateTime ? new Date(todo.endDateTime) : undefined;
 
-        if (
-          startDateTime &&
-          currentTime >= startDateTime &&
-          !todo.startNotified
-        ) {
-          const timeRemaining = endDateTime
-            ? Math.floor(
-                (endDateTime.valueOf() - currentTime.valueOf()) / (1000 * 60)
-              )
-            : "unlimited";
+        if (startDateTime && currentTime >= startDateTime && !todo.startNotified) {
+          const timeRemaining = endDateTime ? Math.floor((endDateTime.valueOf() - currentTime.valueOf()) / (1000 * 60)) : "unlimited";
           // Calculate remaining time in minutes
           new Notification(`🚀 TASK "${todo.title}" has started!`, {
             body: `You have ${timeRemaining} minutes left to complete this task.`,
@@ -191,12 +195,7 @@ const App = () => {
           });
         }
 
-        if (
-          endDateTime &&
-          currentTime >= endDateTime &&
-          currentTime <= new Date(endDateTime.getTime() + 10 * 1000) &&
-          !todo.endNotified
-        ) {
+        if (endDateTime && currentTime >= endDateTime && currentTime <= new Date(endDateTime.getTime() + 10 * 1000) && !todo.endNotified) {
           new Notification(`🎉 TASK "${todo.title}" has ended!`, {
             body: "Great job! Task completed successfully.",
             icon: "task-end-icon.png",
@@ -227,11 +226,42 @@ const App = () => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
+  useEffect(() => {
+    const localData = localStorage.getItem("todosbox");
+    if (localData) {
+      setTodosBox(JSON.parse(localData));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todosbox", JSON.stringify(todosBox));
+  }, [todosBox]);
+
+  useEffect(() => {
+    const localData = localStorage.getItem("options");
+    if (localData) {
+      setOptions(JSON.parse(localData));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("options", JSON.stringify(options));
+  }, [options]);
+
   return (
     <div className="container">
-      <h1 className="title">BeatList</h1>
-      <InputField handleAdd={handleAdd} />
-      <TodosList todos={sortedTodos} handleTodo={handleTodo} />
+      <div className="flex flex-row" style={{ alignItems: "center", marginBottom:20 }}>
+        <h1 className="title">BeatList</h1>
+        <div style={{ marginLeft: 20 }}>
+          <input type="text" placeholder="Enter todo list width" onChange={(e) => handleInputOptions("todoListSize", e.target.value)} value={options.todoListSize} />
+        </div>
+      </div>
+      <div className="flex flex-row">
+        <TodosBoxList options={options} todosBox={todosBox} todos={todos} handleTodo={handleTodo} handleAdd={handleAdd} />
+        <div style={{ fontSize: 30, padding: "0 20px" }} onClick={() => handleAddTodoBox("Ok")}>
+          +
+        </div>
+      </div>
     </div>
   );
 };
