@@ -13,7 +13,7 @@ interface TodosBoxListType {
 
 const TodosBoxList = ({ options, todosBox, todos, handleTodo, handleAdd }: TodosBoxListType) => {
   return (
-    <div style={{ display: "flex", flexDirection: "row", gap: 20, width: "100%" }}>
+    <div style={{ display: "flex", flexDirection: "row", gap: 20, flex: 1 }}>
       {todosBox.map((todoBox) => (
         <div key={todoBox.id}>
           {/* <div>{todoBox.title}</div> */}
