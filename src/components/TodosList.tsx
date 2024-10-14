@@ -10,7 +10,7 @@ interface Props {
 
 const TodosList: React.FC<Props> = ({ todos, handleTodo, options }) => {
   return (
-    <div>
+    <div className="flex flex-row flex-wrap items-start gap-3">
       {todos.map((todo) => {
         return <TodoList key={todo.id} item={todo} handleTodo={handleTodo} options={options} />;
       })}

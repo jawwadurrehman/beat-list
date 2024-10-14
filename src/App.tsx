@@ -3,6 +3,7 @@ import "./App.css";
 import TodosList from "./components/TodosList";
 import InputField from "./components/InputField";
 import dayjs from "dayjs";
+import { Input } from "./components/ui/input";
 
 export interface Todo {
     id: number;
@@ -252,8 +253,8 @@ const App = () => {
     }, [options]);
 
     return (
-        <div className="container">
-            <div className="flex flex-row" style={{ alignItems: "center", marginBottom: 20 }}>
+        <div className="h-screen p-4 text-white bg-slate-900">
+            <div className="flex flex-row items-center justify-center" style={{ marginBottom: 20 }}>
                 <div style={{ height: "50px" }}>
                     <svg style={{ marginTop: "-2%" }} width="100%" height="100%" viewBox="0 0 389.7931034482759 106.20689655172413">
                         <g id="SvgjsG2483" transform="matrix(1.7959770114942528,0,0,1.7959770114942528,16.408045977011493,16.408045977011493)" fill="#ea2088">
@@ -277,36 +278,27 @@ const App = () => {
                                 </g>
                             </g>
                         </g>
-                        <g  transform="matrix(3.9217571623306418,0,0,3.9217571623306418,121.76442869732739,12.567551724325668)" fill="#000000e0">
+                        <g transform="matrix(3.9217571623306418,0,0,3.9217571623306418,121.76442869732739,12.567551724325668)" fill="#ffffff">
                             <path d="M3.92 5.720000000000001 l0.000019531 5.2 l0.04 0 c0.30666 -0.46666 0.74332 -0.84 1.31 -1.12 s1.2167 -0.42 1.95 -0.42 c1.2667 0 2.2966 0.50666 3.09 1.52 s1.19 2.32 1.19 3.92 c0 1.6133 -0.39334 2.9266 -1.18 3.94 s-1.8267 1.52 -3.12 1.52 c-1.68 0 -2.8066 -0.53334 -3.38 -1.6 l-0.04 0 l0 1.32 l-2.7 0 l0 -14.28 l2.84 0 z M3.82 14.84 c0 1 0.21998 1.8 0.65998 2.4 s1.0267 0.9 1.76 0.9 c0.72 0 1.3033 -0.29334 1.75 -0.88 s0.67 -1.3933 0.67 -2.42 c0 -1.0133 -0.21666 -1.82 -0.65 -2.42 s-1.03 -0.9 -1.79 -0.9 c-0.74666 0 -1.3333 0.30666 -1.76 0.92 s-0.64 1.4133 -0.64 2.4 z M17.173000000000002 9.38 c0.97334 0 1.84 0.22664 2.6 0.67998 s1.3567 1.11 1.79 1.97 s0.65 1.85 0.65 2.97 c0 0.10666 -0.0066602 0.28 -0.02 0.52 l-7.46 0 c0.02666 0.82666 0.24332 1.47 0.64998 1.93 s1.03 0.69 1.87 0.69 c0.52 0 0.99666 -0.13 1.43 -0.39 s0.71 -0.57666 0.83 -0.95 l2.5 0 c-0.73334 2.32 -2.3466 3.48 -4.84 3.48 c-0.94666 -0.01334 -1.8233 -0.22 -2.63 -0.62 s-1.45 -1.0233 -1.93 -1.87 s-0.72 -1.83 -0.72 -2.95 c0 -1.0533 0.24334 -2.0134 0.73 -2.88 s1.1333 -1.5133 1.94 -1.94 s1.6767 -0.64 2.61 -0.64 z M19.353 13.719999999999999 c-0.13334 -0.77334 -0.38 -1.3333 -0.74 -1.68 s-0.87334 -0.52 -1.54 -0.52 c-0.69334 0 -1.24 0.19666 -1.64 0.59 s-0.63334 0.93 -0.7 1.61 l4.62 0 z M27.726000000000003 9.38 c3.0134 0.01334 4.52 0.9933 4.52 2.94 l0 5.48 c0 1.0133 0.12 1.7467 0.36 2.2 l-2.88 0 c-0.10666 -0.32 -0.17332 -0.65334 -0.19998 -1 c-0.84 0.85334 -2 1.28 -3.48 1.28 c-1.08 0 -1.9367 -0.27334 -2.57 -0.82 s-0.95 -1.3067 -0.95 -2.28 c0 -0.94666 0.3 -1.68 0.9 -2.2 c0.61334 -0.54666 1.7267 -0.89332 3.34 -1.04 c1.1467 -0.12 1.8733 -0.27 2.18 -0.45 s0.46 -0.45666 0.46 -0.83 c0 -0.46666 -0.14 -0.81332 -0.42 -1.04 s-0.74666 -0.34 -1.4 -0.34 c-0.6 0 -1.0533 0.12334 -1.36 0.37 s-0.48666 0.64332 -0.54 1.19 l-2.84 0 c0.06666 -1.1333 0.53332 -1.9933 1.4 -2.58 s2.0266 -0.88 3.48 -0.88 z M25.366000000000003 17.06 c0 0.88 0.58 1.32 1.74 1.32 c1.52 -0.01334 2.2866 -0.79334 2.3 -2.34 l0 -1.1 c-0.22666 0.22666 -0.8 0.39332 -1.72 0.49998 c-0.8 0.09334 -1.3867 0.25668 -1.76 0.49002 s-0.56 0.61 -0.56 1.13 z M37.139 6.5600000000000005 l0.000019531 3.1 l2.08 0 l0 1.9 l-2.08 0 l0 5.12 c0 0.48 0.08 0.8 0.24 0.96 s0.48 0.24 0.96 0.24 c0.34666 0 0.64 -0.02666 0.88 -0.08 l0 2.22 c-0.4 0.06666 -0.96 0.1 -1.68 0.1 c-1.0933 0 -1.9067 -0.18666 -2.44 -0.56 s-0.8 -1.02 -0.8 -1.94 l0 -6.06 l-1.72 0 l0 -1.9 l1.72 0 l0 -3.1 l2.84 0 z M47.245000000000005 5.720000000000001 l0 14.28 l-2.84 0 l0 -14.28 l2.84 0 z M51.498000000000005 5.720000000000001 l0 2.34 l-2.84 0 l0 -2.34 l2.84 0 z M51.498000000000005 9.66 l0 10.34 l-2.84 0 l0 -10.34 l2.84 0 z M57.071000000000005 9.38 c1.3867 0 2.47 0.28002 3.25 0.84002 s1.2167 1.38 1.31 2.46 l-2.7 0 c-0.04 -0.49334 -0.22 -0.85 -0.54 -1.07 s-0.78666 -0.33 -1.4 -0.33 c-0.53334 0 -0.93 0.08 -1.19 0.24 s-0.39 0.4 -0.39 0.72 c0 0.24 0.08666 0.44 0.26 0.6 s0.43668 0.3 0.79002 0.42 s0.74334 0.22 1.17 0.3 c1.2933 0.25334 2.2066 0.51334 2.74 0.78 s0.92334 0.58666 1.17 0.96 s0.37 0.83334 0.37 1.38 c0 1.16 -0.42334 2.05 -1.27 2.67 s-1.9967 0.93 -3.45 0.93 c-1.52 0 -2.7034 -0.32666 -3.55 -0.98 s-1.2833 -1.54 -1.31 -2.66 l2.7 0 c0 0.53334 0.20666 0.95668 0.62 1.27 s0.93334 0.47 1.56 0.47 c0.53334 0 0.97668 -0.11666 1.33 -0.35 s0.53 -0.55668 0.53 -0.97002 c0 -0.26666 -0.11 -0.48666 -0.33 -0.66 s-0.53 -0.32668 -0.93 -0.46002 s-1.02 -0.28668 -1.86 -0.46002 c-0.66666 -0.13334 -1.26 -0.31334 -1.78 -0.54 s-0.91666 -0.52332 -1.19 -0.88998 s-0.41 -0.81666 -0.41 -1.35 c0 -0.68 0.16334 -1.2733 0.49 -1.78 s0.82666 -0.89 1.5 -1.15 s1.51 -0.39 2.51 -0.39 z M66.26400000000001 6.5600000000000005 l0.000019531 3.1 l2.08 0 l0 1.9 l-2.08 0 l0 5.12 c0 0.48 0.08 0.8 0.24 0.96 s0.48 0.24 0.96 0.24 c0.34666 0 0.64 -0.02666 0.88 -0.08 l0 2.22 c-0.4 0.06666 -0.96 0.1 -1.68 0.1 c-1.0933 0 -1.9067 -0.18666 -2.44 -0.56 s-0.8 -1.02 -0.8 -1.94 l0 -6.06 l-1.72 0 l0 -1.9 l1.72 0 l0 -3.1 l2.84 0 z"></path>
                         </g>
                     </svg>
                 </div>
-                <div style={{ marginLeft: 20, display: "flex", alignItems: "center", gap: "12px" }}>
+                {/* <div style={{ marginLeft: 20, display: "flex", alignItems: "center", gap: "12px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <p style={{ fontSize: "12px" }}>Item Max Width:</p>
-                        <input type="text" placeholder="Enter CSS width value" onChange={(e) => handleInputOptions("todoListSize", e.target.value)} value={options.todoListSize} />
+                        <Input type="text" placeholder="Enter CSS width value" onChange={(e) => handleInputOptions("todoListSize", e.target.value)} value={options.todoListSize} />
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <p style={{ fontSize: "12px" }}>Item Max Height:</p>
-                        <input type="text" placeholder="Enter CSS width value" onChange={(e) => handleInputOptions("todoMaxHeight", e.target.value)} value={options.todoMaxHeight} />
+                        <Input type="text" placeholder="Enter CSS height value" onChange={(e) => handleInputOptions("todoMaxHeight", e.target.value)} value={options.todoMaxHeight} />
                     </div>
-                </div>
+                </div> */}
             </div>
-            <div className="flex flex-row" style={{ flex: 1, height: 0, position: "relative" }}>
-                <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                    <div style={{ width: options.todoListSize, overflow: "auto" }}>
-                        <TodosList todos={sortedTodos} handleTodo={handleTodo} options={options} />
-                    </div>
-                    <div style={{ width: options.todoListSize }}>
-                        <InputField handleAdd={(title, description) => handleAdd(title, description)} />
-                    </div>
-                </div>
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", position: "absolute", right: 0, top: 0, bottom: 0 }}>
-                    <div style={{ width: options.todoListSize, overflow: "auto" }}>
-                        <TodosList todos={sortedTodos.filter((todo) => todo.important)} handleTodo={handleTodo} options={options} />
-                    </div>
-                </div>
+            <div className="max-w-lg mb-8 ml-auto mr-auto">
+                <InputField handleAdd={(title, description) => handleAdd(title, description)} />
+            </div>
+            <div className="flex flex-row" style={{ flex: 1, position: "relative" }}>
+                <TodosList todos={sortedTodos} handleTodo={handleTodo} options={options} />
             </div>
         </div>
     );
